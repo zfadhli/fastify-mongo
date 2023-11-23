@@ -1,18 +1,36 @@
-import fp from "fastify-plugin";
+import User from "./model.ts";
 
-async function users(app) {
+export default async function (app) {
 	app.get("/", {
-		handler: async (req, reply) => {
-			return { name: "zfadhli" };
+		handler: async (req, res) => {
+			const user = await User.find();
+
+			res.send({
+				success: true,
+				data: user,
+			});
 		},
 	});
-	app.post("/:id", {
-		handler: async (req, reply) => {
-			return { name: "zfadhli", count: req.params.id };
+
+	app.post("/", {
+		handler: async (req, res) => {
+			const user = await User.create(req.body);
+
+			res.send({
+				success: true,
+				data: user,
+			});
+		},
+	});
+
+	app.get("/:id", {
+		handler: async (req, res) => {
+			const user = await User.findById(req.params.id);
+
+			res.send({
+				success: true,
+				data: user,
+			});
 		},
 	});
 }
-
-export default fp(async function (app) {
-	app.register(users, { prefix: "/api/v1/users" });
-});

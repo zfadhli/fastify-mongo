@@ -1,3 +1,4 @@
+import "dotenv/config";
 import server from "./server.ts";
 
 process.on("unhandledRejection", (err) => {
@@ -7,12 +8,11 @@ process.on("unhandledRejection", (err) => {
 
 const port = 5000;
 await server.listen({ port });
-console.log(server.routes);
 
 for (const signal of ["SIGINT", "SIGTERM"]) {
 	process.on(signal, () =>
 		server.close().then((err) => {
-			console.log(`close application on ${signal}`);
+			console.log(`Close application on ${signal}`);
 			process.exit(err ? 1 : 0);
 		}),
 	);

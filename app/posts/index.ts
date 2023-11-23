@@ -1,18 +1,26 @@
-import fp from "fastify-plugin";
-
-async function routes(app) {
+export default async function (app) {
 	app.get("/", {
-		handler: async (req, reply) => {
-			return { name: "posts" };
+		handler: async (req, res) => {
+			res.send({
+				name: "posts.index",
+			});
 		},
 	});
+
+	app.post("/", {
+		handler: async (req, res) => {
+			res.send({
+				name: "posts.store",
+			});
+		},
+	});
+
 	app.get("/:id", {
-		handler: async (req, reply) => {
-			return { name: "posts", count: req.params.id };
+		handler: async (req, res) => {
+			res.send({
+				id: req.params.id,
+				name: "posts.show",
+			});
 		},
 	});
 }
-
-export default fp(async function (app) {
-	app.register(routes, { prefix: "/api/v1/posts" });
-});
