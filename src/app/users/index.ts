@@ -2,35 +2,26 @@ import User from './model.ts'
 
 export default async function (app) {
   app.get('/', {
-    handler: async (req, res) => {
+    handler: async (request, reply) => {
       const user = await User.find()
 
-      res.send({
-        success: true,
-        data: user,
-      })
+      reply.send({ user })
     },
   })
 
   app.post('/', {
-    handler: async (req, res) => {
-      const user = await User.create(req.body)
+    handler: async (request, reply) => {
+      const user = await User.create(request.body)
 
-      res.send({
-        success: true,
-        data: user,
-      })
+      reply.send({ user })
     },
   })
 
   app.get('/:id', {
-    handler: async (req, res) => {
-      const user = await User.findById(req.params.id)
+    handler: async (request, reply) => {
+      const user = await User.findById(request.params.id)
 
-      res.send({
-        success: true,
-        data: user,
-      })
+      reply.send({ user })
     },
   })
 }
