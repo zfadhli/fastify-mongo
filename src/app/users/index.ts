@@ -11,19 +11,12 @@ export default async function (app) {
     },
   })
 
-  app.post('/', {
-    handler: async (request, reply) => {
-      const user = await User.create(request.body)
-
-      reply.send({ user })
-    },
-  })
-
   app.get('/:id', {
+    schema: schema.get,
     handler: async (request, reply) => {
-      const user = await User.findById(request.params.id)
+      const user = await User.find({ id: request.params.id })
 
-      reply.send({ user })
+      reply.send(user)
     },
   })
 }
