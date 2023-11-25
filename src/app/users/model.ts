@@ -62,6 +62,8 @@ schema.methods.matchPassword = async function (enteredPassword) {
   return await bcrypt.compare(enteredPassword, this.password)
 }
 
-type User = InferSchemaType<typeof schema>
+type User = InferSchemaType<typeof schema> & {
+  matchPassword: (password: string) => Promise<boolean>
+}
 
 export default mongoose.model<User>('User', schema)
