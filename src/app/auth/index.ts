@@ -1,7 +1,6 @@
 import { ulid } from 'ulid'
 import User from '$app/users/model.ts'
 import * as schema from './schema.ts'
-import createError, { Unauthorized } from 'http-errors'
 
 export default async function (app) {
   app.post('/login', {
