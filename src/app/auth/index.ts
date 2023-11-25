@@ -14,6 +14,7 @@ export default async function (app) {
       }
 
       const payload = {
+        _id: user._id,
         id: user.id,
         username: user.username,
         email: user.email,
