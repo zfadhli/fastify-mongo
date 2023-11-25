@@ -1,7 +1,17 @@
 import mongoose from 'mongoose'
+import bcrypt from 'bcryptjs'
 
 const schema = new mongoose.Schema(
   {
+    id: {
+      type: String,
+      required: true,
+    },
+    username: {
+      type: String,
+      required: true,
+      trim: true,
+    },
     email: {
       type: String,
       required: true,
@@ -11,6 +21,7 @@ const schema = new mongoose.Schema(
     },
     password: {
       type: String,
+      select: false,
       required: true,
     },
     token: {
@@ -18,11 +29,7 @@ const schema = new mongoose.Schema(
       required: true,
       trim: true,
     },
-    username: {
-      type: String,
-      required: true,
-      trim: true,
-    },
+
     bio: {
       type: String,
       required: true,
@@ -41,5 +48,14 @@ const schema = new mongoose.Schema(
   },
   { timestamps: true },
 )
+
+schema.pre('save', async function (next) {
+  if (!this.isModified('password')) {
+    next()
+  }
+
+  const salt = await bcrypt.genSalt(10)
+  this.password = await bcrypt.hash(this.password, salt)
+})
 
 export default mongoose.model('User', schema)

@@ -7,7 +7,7 @@ export default async function (app) {
     handler: async (request, reply) => {
       const user = await User.find()
 
-      reply.send({ user })
+      reply.send(user)
     },
   })
 
