@@ -14,7 +14,7 @@ const app = fastify({
   ignoreTrailingSlash: true,
   logger: {
     transport: {
-      target: 'pino-pretty',
+      target: '@fastify/one-line-logger',
     },
   },
 })

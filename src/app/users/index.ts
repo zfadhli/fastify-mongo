@@ -1,7 +1,9 @@
 import User from './model.ts'
+import * as schema from './schema.ts'
 
 export default async function (app) {
   app.get('/', {
+    schema: schema.get,
     handler: async (request, reply) => {
       const user = await User.find()
 
