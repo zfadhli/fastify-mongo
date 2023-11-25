@@ -13,26 +13,21 @@ export default async function (app) {
         reply.unauthorized('Wrong credentials')
       }
 
-      const token = await reply.jwtSign({
+      const payload = {
         id: user.id,
         username: user.username,
         email: user.email,
-      })
-
-      const doc = await User.findOneAndUpdate(
-        { email },
-        { token },
-        {
-          new: true,
-        },
-      )
-      request.user = {
-        id: doc.id,
-        username: doc.username,
-        email: doc.email,
-        token,
       }
-      reply.send(doc)
+
+      const token = await reply.jwtSign({ payload })
+      user.token = token
+      await user.save()
+
+      const opts = {
+        expires: new Date(Date.now() + app.config.JWT_COOKIE_EXPIRE * 24 * 60 * 60 * 1000),
+        httpOnly: true,
+      }
+      reply.cookie('token', token, opts).send(user)
     },
   })
 
@@ -47,12 +42,27 @@ export default async function (app) {
         username,
         email,
         password,
-        token: 'token123',
+        token: '',
         bio: '',
         image: `https://xsgames.co/randomusers/assets/avatars/pixel/${random}.jpg`,
       })
 
-      reply.send(user)
+      const payload = {
+        id: user.id,
+        username: user.username,
+        email: user.email,
+      }
+
+      const token = await reply.jwtSign({ payload })
+      user.token = token
+      await user.save()
+
+      const opts = {
+        expires: new Date(Date.now() + app.config.JWT_COOKIE_EXPIRE * 24 * 60 * 60 * 1000),
+        httpOnly: true,
+      }
+
+      reply.cookie('token', token, opts).send(user)
     },
   })
 }
