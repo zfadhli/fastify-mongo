@@ -1,10 +1,8 @@
 export default async function (app) {
   app.get('/', {
-    handler: async (req, res) => {
-      console.log(app.config.MONGO_URI)
-      res.send({
-        name: 'posts.index',
-      })
+    onRequest: [app.authenticate],
+    handler: async (request, reply) => {
+      reply.send(request.user)
     },
   })
 

@@ -13,7 +13,26 @@ export default async function (app) {
         reply.unauthorized('Wrong credentials')
       }
 
-      reply.send(user)
+      const token = await reply.jwtSign({
+        id: user.id,
+        username: user.username,
+        email: user.email,
+      })
+
+      const doc = await User.findOneAndUpdate(
+        { email },
+        { token },
+        {
+          new: true,
+        },
+      )
+      request.user = {
+        id: doc.id,
+        username: doc.username,
+        email: doc.email,
+        token,
+      }
+      reply.send(doc)
     },
   })
 
