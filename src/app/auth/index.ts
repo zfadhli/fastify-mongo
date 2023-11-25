@@ -21,19 +21,16 @@ export default async function (app) {
     schema: schema.register,
     handler: async (request, reply) => {
       const { username, email, password } = request.body
-      const id = ulid()
-      const token = 'token123'
-      const bio = 'lorem ipsum'
-      const image = 'https://image'
+      const random = Math.floor(Math.random() * 40 + 10)
 
       const user = await User.create({
-        id,
+        id: ulid(),
         username,
         email,
         password,
-        token,
-        bio,
-        image,
+        token: 'token123',
+        bio: '',
+        image: `https://xsgames.co/randomusers/assets/avatars/pixel/${random}.jpg`,
       })
 
       reply.send(user)

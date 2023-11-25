@@ -9,15 +9,15 @@ const schema = new mongoose.Schema(
     },
     username: {
       type: String,
-      required: true,
       trim: true,
+      required: true,
     },
     email: {
       type: String,
-      required: true,
       trim: true,
       unique: true,
       lowercase: true,
+      required: true,
     },
     password: {
       type: String,
@@ -26,19 +26,18 @@ const schema = new mongoose.Schema(
     },
     token: {
       type: String,
-      required: true,
       trim: true,
+      required: true,
     },
 
     bio: {
       type: String,
-      required: true,
       trim: true,
     },
     image: {
       type: String,
-      required: true,
       trim: true,
+      required: true,
     },
     role: {
       type: String,
