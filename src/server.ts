@@ -1,6 +1,7 @@
 import fastify from 'fastify'
 import cors from '@fastify/cors'
 import autoLoad from '@fastify/autoload'
+import sensible from '@fastify/sensible'
 import fastifyPrintRoutes from 'fastify-print-routes'
 import { join } from 'desm'
 import mongoose from 'mongoose'
@@ -20,6 +21,7 @@ const app = fastify({
 })
 
 await app.register(cors, {})
+await app.register(sensible)
 await app.register(fastifyPrintRoutes)
 await app.register(autoLoad, {
   dir: join(import.meta.url, 'plugins'),

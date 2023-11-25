@@ -1,13 +1,20 @@
 import { ulid } from 'ulid'
 import User from '$app/users/model.ts'
 import * as schema from './schema.ts'
+import createError, { Unauthorized } from 'http-errors'
 
 export default async function (app) {
   app.post('/login', {
     schema: schema.login,
     handler: async (request, reply) => {
-      const token = 'token123'
-      console.log(request.body)
+      const { email, password } = request.body
+      const user = await User.findOne({ email }).select('+password')
+
+      if (!user || !(await user.matchPassword(password))) {
+        reply.unauthorized('Wrong credentials')
+      }
+
+      reply.send(user)
     },
   })
 

@@ -1,4 +1,4 @@
-import mongoose from 'mongoose'
+import mongoose, { type InferSchemaType } from 'mongoose'
 import bcrypt from 'bcryptjs'
 
 const schema = new mongoose.Schema(
@@ -58,4 +58,10 @@ schema.pre('save', async function (next) {
   this.password = await bcrypt.hash(this.password, salt)
 })
 
-export default mongoose.model('User', schema)
+schema.methods.matchPassword = async function (enteredPassword) {
+  return await bcrypt.compare(enteredPassword, this.password)
+}
+
+type User = InferSchemaType<typeof schema>
+
+export default mongoose.model<User>('User', schema)

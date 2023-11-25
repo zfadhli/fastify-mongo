@@ -1,16 +1,9 @@
 import S from 'fluent-json-schema'
-
-export const User = S.object()
-  .prop('id', S.string())
-  .prop('email', S.string())
-  .prop('token', S.string())
-  .prop('username', S.string())
-  .prop('bio', S.string())
-  .prop('image', S.string())
+import { User } from '$app/users/schema.ts'
 
 export const login = {
   body: S.object()
-    .id('http://api/users/login')
+    .id('http://api/auth/login')
     .title('Auth Login')
     .description('Login user')
     .prop('email', S.string().required())
@@ -23,7 +16,7 @@ export const login = {
 
 export const register = {
   body: S.object()
-    .id('http://api/users')
+    .id('http://api/auth/register')
     .title('Auth Register')
     .description('Register a new user')
     .prop('username', S.string().required())
