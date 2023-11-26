@@ -23,12 +23,13 @@ export default async function (app) {
       const id = ulid()
       const post = await Post.create({
         id,
-        slug: `${slugify(title).toLowerCase()}-${id}`,
         title,
         body,
         description,
         author: request.user,
       })
+
+      console.log(post)
 
       const user = await User.findOne({ _id: request.user._id })
       user.posts.push(post._id)

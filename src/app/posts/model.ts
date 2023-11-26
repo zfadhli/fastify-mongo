@@ -1,4 +1,6 @@
 import mongoose, { type InferSchemaType } from 'mongoose'
+import slugify from 'slugify'
+import { ulid } from 'ulid'
 
 const schema = new mongoose.Schema(
   {
@@ -9,7 +11,6 @@ const schema = new mongoose.Schema(
     slug: {
       type: String,
       trim: true,
-      required: true,
     },
     title: {
       type: String,
@@ -34,6 +35,11 @@ const schema = new mongoose.Schema(
   },
   { timestamps: true, toJSON: { virtuals: true }, toObject: { virtuals: true } },
 )
+
+schema.pre('save', function (next) {
+  this.slug = `${slugify(this.title, { lower: true })}-${ulid()}`
+  next()
+})
 
 type Post = InferSchemaType<typeof schema>
 
