@@ -42,7 +42,7 @@ export default async function (app) {
     schema: schema.show,
     onRequest: findPost,
     handler: async (request, reply) => {
-      const doc = await Post.findById(request.params.id).exec()
+      const doc = await Post.findById(request.params.id).populate('author').exec()
       reply.send(doc)
     },
   })
