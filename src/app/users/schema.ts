@@ -1,4 +1,5 @@
 import S from 'fluent-json-schema'
+// import { Post as P } from '$app/posts/schema.ts'
 
 export const User = S.object()
   .prop('id', S.string())
