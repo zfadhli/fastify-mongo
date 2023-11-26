@@ -20,7 +20,7 @@ export default async function (app) {
         email: user.email,
       }
 
-      const token = await reply.jwtSign({ payload })
+      const token = await reply.jwtSign(payload)
       user.token = token
       await user.save()
 
@@ -55,7 +55,7 @@ export default async function (app) {
         email: user.email,
       }
 
-      const token = await reply.jwtSign({ payload })
+      const token = await reply.jwtSign(payload)
       user.token = token
       await user.save()
 

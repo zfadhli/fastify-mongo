@@ -26,11 +26,11 @@ export default async function (app) {
         title,
         body,
         description,
-        author: request.user.payload,
+        author: request.user,
       })
 
       await User.findByIdAndUpdate(
-        { _id: request.user.payload._id },
+        { _id: request.user._id },
         { posts: post._id },
         { new: true, runValidators: true },
       )
