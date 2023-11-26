@@ -40,7 +40,7 @@ export default async function (app) {
 
   app.get('/:id', {
     schema: schema.show,
-    prehandler: findPost,
+    onRequest: findPost,
     handler: async (request, reply) => {
       const doc = await Post.findById(request.params.id).exec()
       reply.send(doc)
@@ -48,8 +48,7 @@ export default async function (app) {
   })
 
   app.put('/:id', {
-    onRequest: [app.authenticate],
-    preHandler: [findPost, isOwner],
+    onRequest: [app.authenticate, findPost, isOwner],
     handler: async (request, reply) => {
       const post = await Post.findByIdAndUpdate(request.params.id, request.body, {
         new: true,
@@ -61,8 +60,7 @@ export default async function (app) {
   })
 
   app.delete('/:id', {
-    onRequest: [app.authenticate],
-    preHandler: [findPost, isOwner],
+    onRequest: [app.authenticate, findPost, isOwner],
     handler: async (request, reply) => {
       const doc = await Post.findByIdAndDelete(request.params.id)
       reply.send(doc)

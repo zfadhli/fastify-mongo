@@ -18,11 +18,6 @@ const app = fastify({
       target: '@fastify/one-line-logger',
     },
   },
-}).setErrorHandler((error, request, reply) => {
-  if (+error.code === 11000) reply.badRequest()
-  if (error.name === 'CastError') reply.notFound()
-  if (error.name === 'ValidationError') reply.badRequest()
-  // reply.send(`Internal Server Error - ${error}`)
 })
 
 await app.register(cors, {})
@@ -35,6 +30,13 @@ await app.register(autoLoad, {
   dir: join(import.meta.url, 'app'),
   options: { prefix: '/api' },
 })
+
+await app.setErrorHandler((error, request, reply) => {
+  request.log.error({ request, reply, error }, error?.message)
+  error.message = 'An error has occurred'
+  reply.send(error)
+})
+
 await app.ready()
 
 export default app
