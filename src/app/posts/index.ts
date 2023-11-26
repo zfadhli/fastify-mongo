@@ -3,6 +3,7 @@ import slugify from 'slugify'
 import Post from './model.ts'
 import User from '$app/users/model.ts'
 import * as schema from './schema.ts'
+import { findPost } from './service.ts'
 
 export default async function (app) {
   app.get('/', {
@@ -42,6 +43,24 @@ export default async function (app) {
     handler: async (request, reply) => {
       const posts = await Post.findOne({ id: request.params.id }).populate('author').exec()
       reply.send(posts)
+    },
+  })
+
+  app.put('/:id', {
+    preHandler: findPost,
+    handler: async (request, reply) => {
+      const post = await Post.findByIdAndUpdate(request.params.id, request.body, {
+        new: true,
+        runValidators: true,
+      })
+
+      reply.send(post)
+    },
+  })
+
+  app.delete('/:id', {
+    handler: async (request, reply) => {
+      reply.send('delete')
     },
   })
 }
