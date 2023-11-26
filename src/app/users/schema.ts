@@ -1,4 +1,6 @@
 import S from 'fluent-json-schema'
+
+// this causes ReferenceError: Cannot access 'User' before initialization
 // import { Post as P } from '$app/posts/schema.ts'
 
 export const User = S.object()
