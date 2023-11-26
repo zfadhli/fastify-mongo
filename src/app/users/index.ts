@@ -4,7 +4,7 @@ import * as schema from './schema.ts'
 export default async function (app) {
   app.get('/', {
     onRequest: [app.authenticate],
-    // schema: schema.index,
+    schema: schema.index,
     handler: async (request, reply) => {
       const user = await User.findOne({ id: request.user.id }).populate('posts')
 
@@ -13,7 +13,7 @@ export default async function (app) {
   })
 
   app.get('/:id', {
-    // schema: schema.show,
+    schema: schema.show,
     handler: async (request, reply) => {
       const user = await User.findOne({ id: request.params.id }).populate('posts')
 

@@ -29,11 +29,9 @@ export default async function (app) {
         author: request.user,
       })
 
-      await User.findByIdAndUpdate(
-        { _id: request.user._id },
-        { posts: post._id },
-        { new: true, runValidators: true },
-      )
+      const user = await User.findOne({ _id: request.user._id })
+      user.posts.push(post._id)
+      await user.save()
 
       reply.send(post)
     },

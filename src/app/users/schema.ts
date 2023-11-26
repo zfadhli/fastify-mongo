@@ -17,7 +17,7 @@ const Post = S.object()
 
 export const index = {
   response: {
-    200: S.array().items(User.prop('posts', S.array().items(Post.only(['id', 'slug'])))),
+    200: User.prop('posts', S.array().items(Post)),
   },
 }
 
