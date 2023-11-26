@@ -7,6 +7,8 @@ export const Post = S.object()
   .prop('title', S.string())
   .prop('body', S.string())
   .prop('description', S.string())
+  .prop('createdAt', S.string())
+  .prop('updatedAt', S.string())
 
 export const index = {
   response: {
@@ -28,5 +30,17 @@ export const store = {
 export const show = {
   response: {
     200: Post.prop('author', User),
+  },
+}
+
+export const update = {
+  response: {
+    200: Post,
+  },
+}
+
+export const destroy = {
+  response: {
+    200: Post,
   },
 }

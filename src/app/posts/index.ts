@@ -43,6 +43,7 @@ export default async function (app) {
   })
 
   app.put('/:id', {
+    schema: schema.update,
     onRequest: [app.authenticate, findPost, isOwner],
     handler: async (request, reply) => {
       const post = await Post.findByIdAndUpdate(request.params.id, request.body, {
@@ -55,6 +56,7 @@ export default async function (app) {
   })
 
   app.delete('/:id', {
+    schema: schema.destroy,
     onRequest: [app.authenticate, findPost, isOwner],
     handler: async (request, reply) => {
       const doc = await Post.findByIdAndDelete(request.params.id)
