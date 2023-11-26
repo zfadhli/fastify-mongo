@@ -1,4 +1,3 @@
-import { ulid } from 'ulid'
 import User from '$app/users/model.ts'
 import * as schema from './schema.ts'
 
@@ -14,9 +13,7 @@ export default async function (app) {
       }
 
       const payload = {
-        _id: user._id,
-        id: user.id,
-        username: user.username,
+        id: user._id,
         email: user.email,
       }
 
@@ -39,7 +36,6 @@ export default async function (app) {
       const random = Math.floor(Math.random() * 40 + 10)
 
       const user = await User.create({
-        id: ulid(),
         username,
         email,
         password,
@@ -49,9 +45,7 @@ export default async function (app) {
       })
 
       const payload = {
-        _id: user._id,
-        id: user.id,
-        username: user.username,
+        id: user._id,
         email: user.email,
       }
 

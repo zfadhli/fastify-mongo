@@ -3,10 +3,6 @@ import bcrypt from 'bcryptjs'
 
 const schema = new mongoose.Schema(
   {
-    id: {
-      type: String,
-      required: true,
-    },
     username: {
       type: String,
       trim: true,
@@ -49,7 +45,11 @@ const schema = new mongoose.Schema(
       },
     ],
   },
-  { timestamps: true, toJSON: { virtuals: true }, toObject: { virtuals: true } },
+  {
+    timestamps: true,
+    toJSON: { virtuals: true },
+    toObject: { virtuals: true },
+  },
 )
 
 schema.pre('save', async function (next) {

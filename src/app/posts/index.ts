@@ -1,5 +1,3 @@
-import { ulid } from 'ulid'
-import slugify from 'slugify'
 import Post from './model.ts'
 import User from '$app/users/model.ts'
 import * as schema from './schema.ts'
@@ -20,18 +18,14 @@ export default async function (app) {
     schema: schema.store,
     handler: async (request, reply) => {
       const { title, body, description } = request.body
-      const id = ulid()
       const post = await Post.create({
-        id,
         title,
         body,
         description,
-        author: request.user,
+        author: request.user.id,
       })
 
-      console.log(post)
-
-      const user = await User.findOne({ _id: request.user._id })
+      const user = await User.findById(request.user.id)
       user.posts.push(post._id)
       await user.save()
 

@@ -4,10 +4,6 @@ import { ulid } from 'ulid'
 
 const schema = new mongoose.Schema(
   {
-    id: {
-      type: String,
-      required: true,
-    },
     slug: {
       type: String,
       trim: true,
@@ -33,7 +29,11 @@ const schema = new mongoose.Schema(
       required: true,
     },
   },
-  { timestamps: true, toJSON: { virtuals: true }, toObject: { virtuals: true } },
+  {
+    timestamps: true,
+    toJSON: { virtuals: true },
+    toObject: { virtuals: true },
+  },
 )
 
 schema.pre('save', function (next) {
