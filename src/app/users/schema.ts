@@ -8,8 +8,21 @@ export const User = S.object()
   .prop('bio', S.string())
   .prop('image', S.string())
 
-export const get = {
+const Post = S.object()
+  .prop('id', S.string())
+  .prop('slug', S.string())
+  .prop('title', S.string())
+  .prop('body', S.string())
+  .prop('description', S.string())
+
+export const index = {
   response: {
-    200: S.array().items(User),
+    200: S.array().items(User.prop('posts', S.array().items(Post.only(['id', 'slug'])))),
+  },
+}
+
+export const show = {
+  response: {
+    200: User.prop('posts', S.array().items(Post)),
   },
 }

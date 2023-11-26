@@ -32,7 +32,7 @@ const schema = new mongoose.Schema(
       required: true,
     },
   },
-  { timestamps: true },
+  { timestamps: true, toJSON: { virtuals: true }, toObject: { virtuals: true } },
 )
 
 type Post = InferSchemaType<typeof schema>

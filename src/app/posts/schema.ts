@@ -10,7 +10,7 @@ export const Post = S.object()
 
 export const index = {
   response: {
-    200: S.array().items(S.object().prop('author', S.object().prop('id', S.string())).extend(Post)),
+    200: S.array().items(Post.prop('author', User.only(['id']))),
   },
 }
 
@@ -27,6 +27,6 @@ export const store = {
 
 export const show = {
   response: {
-    200: S.object().prop('author', User).extend(Post),
+    200: Post.prop('author', User),
   },
 }

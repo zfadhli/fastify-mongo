@@ -1,13 +1,14 @@
 import { ulid } from 'ulid'
 import slugify from 'slugify'
 import Post from './model.ts'
+import User from '$app/users/model.ts'
 import * as schema from './schema.ts'
 
 export default async function (app) {
   app.get('/', {
     schema: schema.index,
     handler: async (request, reply) => {
-      const posts = await Post.find().populate('author')
+      const posts = await Post.find().populate('author').exec()
 
       reply.send(posts)
     },
@@ -28,6 +29,12 @@ export default async function (app) {
         author: request.user.payload,
       })
 
+      await User.findByIdAndUpdate(
+        { _id: request.user.payload._id },
+        { posts: post._id },
+        { new: true, runValidators: true },
+      )
+
       reply.send(post)
     },
   })
@@ -35,7 +42,7 @@ export default async function (app) {
   app.get('/:id', {
     schema: schema.show,
     handler: async (request, reply) => {
-      const posts = await Post.findOne({ id: request.params.id }).populate('author')
+      const posts = await Post.findOne({ id: request.params.id }).populate('author').exec()
       reply.send(posts)
     },
   })

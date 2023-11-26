@@ -27,7 +27,6 @@ const schema = new mongoose.Schema(
     token: {
       type: String,
       trim: true,
-      required: true,
     },
 
     bio: {
@@ -37,15 +36,20 @@ const schema = new mongoose.Schema(
     image: {
       type: String,
       trim: true,
-      required: true,
     },
     role: {
       type: String,
       enum: ['Admin', 'Manager', 'Team'],
       default: 'Team',
     },
+    posts: [
+      {
+        type: mongoose.Schema.ObjectId,
+        ref: 'Post',
+      },
+    ],
   },
-  { timestamps: true },
+  { timestamps: true, toJSON: { virtuals: true }, toObject: { virtuals: true } },
 )
 
 schema.pre('save', async function (next) {

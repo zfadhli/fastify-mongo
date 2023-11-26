@@ -3,18 +3,19 @@ import * as schema from './schema.ts'
 
 export default async function (app) {
   app.get('/', {
-    schema: schema.get,
+    onRequest: [app.authenticate],
+    schema: schema.index,
     handler: async (request, reply) => {
-      const user = await User.find()
+      const user = await User.find({ email: request.user.payload.email }).populate('posts')
 
       reply.send(user)
     },
   })
 
   app.get('/:id', {
-    schema: schema.get,
+    schema: schema.show,
     handler: async (request, reply) => {
-      const user = await User.find({ id: request.params.id })
+      const user = await User.findOne({ id: request.params.id }).populate('posts')
 
       reply.send(user)
     },
