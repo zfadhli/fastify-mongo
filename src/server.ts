@@ -18,6 +18,11 @@ const app = fastify({
       target: '@fastify/one-line-logger',
     },
   },
+}).setErrorHandler((error, request, reply) => {
+  if (+error.code === 11000) reply.badRequest()
+  if (error.name === 'CastError') reply.notFound()
+  if (error.name === 'ValidationError') reply.badRequest()
+  // reply.send(`Internal Server Error - ${error}`)
 })
 
 await app.register(cors, {})

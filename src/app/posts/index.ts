@@ -3,7 +3,7 @@ import slugify from 'slugify'
 import Post from './model.ts'
 import User from '$app/users/model.ts'
 import * as schema from './schema.ts'
-import { findPost } from './service.ts'
+import { findPost, isOwner } from './service.ts'
 
 export default async function (app) {
   app.get('/', {
@@ -40,14 +40,16 @@ export default async function (app) {
 
   app.get('/:id', {
     schema: schema.show,
+    prehandler: findPost,
     handler: async (request, reply) => {
-      const posts = await Post.findOne({ id: request.params.id }).populate('author').exec()
-      reply.send(posts)
+      const doc = await Post.findById(request.params.id).exec()
+      reply.send(doc)
     },
   })
 
   app.put('/:id', {
-    preHandler: findPost,
+    onRequest: [app.authenticate],
+    preHandler: [findPost, isOwner],
     handler: async (request, reply) => {
       const post = await Post.findByIdAndUpdate(request.params.id, request.body, {
         new: true,
@@ -59,8 +61,11 @@ export default async function (app) {
   })
 
   app.delete('/:id', {
+    onRequest: [app.authenticate],
+    preHandler: [findPost, isOwner],
     handler: async (request, reply) => {
-      reply.send('delete')
+      const doc = await Post.findByIdAndDelete(request.params.id)
+      reply.send(doc)
     },
   })
 }
